@@ -1,5 +1,7 @@
 from gensim.models.keyedvectors import KeyedVectors
+from argparse import ArgumentParser
 import sys
+import argparse
 
 
 class Embedding:
@@ -17,15 +19,20 @@ class Embedding:
     
     def test(self, words):
         """
-        Executes the analogy test on given set of 4 words
+        Executes the analogy test on given set of 4 words (case-sensitive).
+        
         :param words: list of 4 words
         :return: accuracy of the model
         """
         try:
             # Get 10 word vectors which are similar to the analogy
-            similar_words = self.model.most_similar(positive=[words[1], words[2]], negative=[words[0]])
+            similar_words = self.model.most_similar(positive=[words[1], words[2]], negative=[words[0]], topn=1)
+            
+            print(similar_words)
+            
             # Extract word from the word vectors
             similar_words = [vector[0] for vector in similar_words]
+            
             # Check if fourth word belong to the extracted word list
             if words[3] in similar_words :
                 return True
@@ -86,12 +93,13 @@ class Analogies:
         words = line.strip().split()
         return words
     
-class Assignment5 :
+class Assignment5:
     # Initialize Word2Vec model with Google News pre-trained vectors
     w2v_embedding = Embedding('embeddings/GoogleNews-vectors-negative300.bin', True)
+    glove_embedding = w2v_embedding
     
-    # Initialize Word2Vec model with Glove pre-trained vectors
-    glove_embedding = Embedding('embeddings/glove.6B.300d.w2v.txt', False)
+    # Initialize Word2Vec model with Google News pre-trained vectors
+   # glove_embedding = Embedding('embeddings/glove.840B.300d.w2v.txt', False)
     
     def __init__(self, filename):
         """
@@ -100,7 +108,7 @@ class Assignment5 :
         """
         try:
             # Initialize Mikolov analogies
-            self.analogies = Analogies('test/word-test.v1.txt')
+            self.analogies = Analogies(filename)
         except:
             print('Unable to read file ' + filename + '. Please verify that the file exists', file=sys.stderr)
             sys.exit(1)
@@ -124,10 +132,38 @@ class Assignment5 :
         return correct * 100 / total
         
     def execute_word2vec(self, group):
-        return self.execute(self.w2v_embedding, group)
+        accuracy = self.execute(self.w2v_embedding, group)
+        print('Accuracy of Word2Vec embedding for %s group is %.2f' % (group, accuracy))
+        return accuracy
 
     def execute_glove(self, group):
+        print('Accuracy of GloVe embedding for %s group is %.2f' % (group, accuracy))
         return self.execute(self.glove_embedding, group)
+
+
+parser = ArgumentParser()
+parser.add_argument('--w2v', action='store', dest='w2v', help='Filename of word2vec format pre-trained embedding')
+parser.add_argument('--glove', action='store', dest='glove', help='Filename of glove format pre-trained embedding')
+parser.add_argument('--test', action='store', dest='test', help='')
+
+
+"""
+Execute Solution 3
+Perform embeddings test on Custom Analogies
+"""
+assignment5 = Assignment5('test/word-test.v2.txt')
+accuracy = assignment5.execute_word2vec('part-to-whole')
+print('Accuracy of word2vec GoogleNews embeddings for "part-to-whole" analogies is %.2f%%' % accuracy)
+
+accuracy = assignment5.execute_glove('part-to-whole')
+print('Accuracy of word2vec GoogleNews embeddings for "month-season" analogies is %.2f%%' % accuracy)
+
+accuracy = assignment5.execute_word2vec('month-season')
+print('Accuracy of word2vec GoogleNews embeddings for "part-to-whole" analogies is %.2f%%' % accuracy)
+
+accuracy = assignment5.execute_glove('month-season')
+print('Accuracy of word2vec GoogleNews embeddings for "month-season" analogies is %.2f%%' % accuracy)
+sys.exit()
 
 
 """
@@ -136,8 +172,8 @@ Perform embeddings test on Mikolov Analogies
 """
 assignment5 = Assignment5('test/word-test.v1.txt')
 
-#accuracy = assignment5.execute_word2vec('capital-world')
-#print('Accuracy of word2vec GoogleNews embeddings for "capital-world" analogies is %.2f%%' % accuracy)
+accuracy = assignment5.execute_word2vec('capital-world')
+print('Accuracy of word2vec GoogleNews embeddings for "capital-world" analogies is %.2f%%' % accuracy)
 
 accuracy = assignment5.execute_glove('capital-world')
 print('Accuracy of GloVe embeddings for "capital-world" analogies is %.2f%%' % accuracy)
