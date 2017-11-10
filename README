@@ -1,0 +1,7 @@
+# ITCS 5111 - ASSIGNMENT 5
+
+The programs rbairath.py and rbairath_solution2.py are the solutions to the Assignment 5.
+
+rbairath.py, python program implements words analogy test using KeyedVectors class of gensim package. The programs expects pre-trained embeddings to perform its analysis. Output is given in the form of numerical embeddings.
+rbairath_solution2.py
+
