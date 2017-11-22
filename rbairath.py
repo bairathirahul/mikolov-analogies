@@ -12,7 +12,7 @@ class Embedding:
         """
         print('Initializing embedding from file ' + embedding + '. Please wait, this may take a while.')
         try:
-            is_binary = os.path.splitext(embedding)[1] != '.txt'
+            is_binary = os.path.splitext(embedding)[1] == '.bin'
             self.model = KeyedVectors.load_word2vec_format(embedding, binary=is_binary)
         except Exception as ex:
             print(ex)
@@ -137,6 +137,11 @@ class Assignment5:
             return accuracy
     
     def prompt(self):
+        """
+        Prompt for input filename and displays the groups found in the input filename
+        Once, the user enters the group index, execute accuracy calculation method
+        :return:
+        """
         while True:
             try:
                 # Prompt user for input filename of analogies
@@ -164,6 +169,11 @@ class Assignment5:
                     group_name = line[2:].strip()
                     group_names.append(group_name)
                     group_pos[group_name] = self.input_file.tell()
+                    
+            # If no group found, ask for another file
+            if len(group_names) == 0:
+                print('No groups found in the given file. Please check and try again!')
+                continue
 
             # Prompt user for group selection
             while True:

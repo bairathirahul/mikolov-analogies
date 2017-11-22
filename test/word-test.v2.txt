@@ -1,0 +1,9 @@
+: part-to-whole
+battery flashlight keyboard computer
+battery flashlight bulb lamp
+battery flashlight engine car
+
+: month-season
+March spring December winter
+March spring August autumn
+March spring May summer

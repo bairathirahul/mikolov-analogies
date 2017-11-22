@@ -22,7 +22,7 @@ class Embedding:
 
 
 class Assignment5:
-    def __init__(self, w2v_filename, glove_filename):
+    def __init__(self, w2v_filename, glove_filename, test_words):
         """
         Initialize class with embeddings
         :param w2v_filename: Name of the w2v format embedding
@@ -45,9 +45,8 @@ class Assignment5:
             
             # Initialize GloVe embedding (if provided)
             self.glove_embedding = Embedding(convert_filename)
-        
-        # Initialize input file variable
-        self.test_words = ['accept', 'combine', 'increase', 'give', 'open', 'scatter']
+            
+        self.test_words = test_words
     
     def execute(self):
         """
@@ -78,6 +77,9 @@ parser.add_argument('--w2v', action='store', dest='w2v', default=None,
 # Add argument for GloVe format filename
 parser.add_argument('--glove', action='store', dest='glove', default=None,
                     help='Filename of glove format pre-trained embedding. Extension must be .txt for text format')
+# Add argument for Words
+parser.add_argument('--words', action='store', dest='words', nargs='+',
+                    help='One or more words to perform the test. It is case-sensitive')
 
 # Read arguments
 args = parser.parse_args()
@@ -85,8 +87,13 @@ args = parser.parse_args()
 if not args.w2v and not args.glove:
     print('Provide at least one embedding file')
     parser.print_help()
-    sys.exit(0)
+    sys.exit(1)
+# If no words are provided, show error and help
+if not args.words:
+    print('Provide at least one word to test')
+    parser.print_help()
+    sys.exit(1)
 
 # Execute the program
-assignment5 = Assignment5(args.w2v, args.glove)
+assignment5 = Assignment5(args.w2v, args.glove, args.words)
 assignment5.execute()
