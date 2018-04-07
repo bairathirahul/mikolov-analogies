@@ -22,7 +22,7 @@ Both of the embeddings are case-sensitive. The program only works for the case-s
 Please be sure that you have extracted the embeddings file if it's archived. Also, if the file format is binary, then the extension should be ".bin". All other extensions are considered to be text file.
 
 ## rbairath_solution2.py
-This program generates 10 most similar words of the given input words. This program also works only on pre-trained embeddings of either Word2Vec or GloVe format.
+This program generates 10 most similar words of the given input words. This program also needs pre-trained embeddings of either Word2Vec or GloVe format.
 
 ### Requirements:
 * Python 3.5 or later
