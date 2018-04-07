@@ -1,6 +1,4 @@
-# ITCS 5111 - ASSIGNMENT 5
-
-The programs rbairath.py and rbairath_solution2.py are the solutions to the Assignment 5.
+# Mikolov Analogies
 
 ## rbairath.py:
 This program processes Mikolov Analogies and report the accuracy of the given model. The program works only on pre-trained embeddings of either Word2Vec format or GloVe format. The embeddings used by me can be downloaded from the following URLs:
